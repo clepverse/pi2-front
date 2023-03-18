@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+import { useNavigation } from '@react-navigation/native';
 import { VStack, Container, Center, Text, Box, Stack, Link, Icon, ScrollView } from 'native-base';
 
 import { FontAwesome } from '@expo/vector-icons';
@@ -5,11 +8,20 @@ import { FontAwesome } from '@expo/vector-icons';
 import LogoSvg from '../assets/logo.svg';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
+import { Pressable } from 'react-native';
 
 export function SignIn() {
+  const [show, setShow] = useState(false);
+
+  const navigation = useNavigation();
+
+  function handleNewAccount() {
+    navigation.navigate('SignUp');
+  }
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-      <VStack flex={1} bg="gray.900">
+      <VStack flex={1}>
         <Center mt={16} mb={12}>
           <LogoSvg />
         </Center>
@@ -60,6 +72,7 @@ export function SignIn() {
                   borderRightRadius={12}
                   borderLeftRadius={0}
                   bgColor="gray.200"
+                  onPress={handleNewAccount}
                 >
                   Registre-se
                 </Button>
@@ -73,8 +86,23 @@ export function SignIn() {
                     placeholder="Entre com seu email"
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    variant="underlined"
                   />
-                  <Input placeholder="Digite sua senha" secureTextEntry />
+                  <Input
+                    placeholder="Digite sua senha"
+                    variant="underlined"
+                    type={show ? 'text' : 'password'}
+                    InputRightElement={
+                      <Pressable onPress={() => setShow(!show)}>
+                        <Icon
+                          as={<Icon as={FontAwesome} name={show ? 'eye' : 'eye-slash'} />}
+                          size={5}
+                          mr="2"
+                          color="muted.400"
+                        />
+                      </Pressable>
+                    }
+                  />
 
                   <Link href="#" justifyContent="flex-end">
                     <Text color="gray.200" fontSize="sm">

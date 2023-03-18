@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { VStack, Container, Center, Text, Box, Stack, Icon, ScrollView } from 'native-base';
 
 import { FontAwesome } from '@expo/vector-icons';
@@ -5,11 +7,22 @@ import { FontAwesome } from '@expo/vector-icons';
 import LogoSvg from '../assets/logo.svg';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
+import { useNavigation } from '@react-navigation/native';
+import { Pressable } from 'react-native';
 
 export function SignUp() {
+  const [show, setShow] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.navigate('SignIn');
+  }
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-      <VStack flex={1} bg="gray.900">
+      <VStack flex={1}>
         <Center mt={16} mb={12}>
           <LogoSvg />
         </Center>
@@ -52,6 +65,7 @@ export function SignUp() {
                   borderRightRadius={0}
                   bgColor="gray.200"
                   color="gray.100"
+                  onPress={handleGoBack}
                 >
                   Entrar
                 </Button>
@@ -74,9 +88,38 @@ export function SignUp() {
                     placeholder="Digite um email válido"
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    variant="underlined"
                   />
-                  <Input placeholder="Digite sua senha" secureTextEntry />
-                  <Input placeholder="Digite sua senha novamente" secureTextEntry />
+                  <Input
+                    placeholder="Digite sua senha"
+                    variant="underlined"
+                    type={show ? 'text' : 'password'}
+                    InputRightElement={
+                      <Pressable onPress={() => setShow(!show)}>
+                        <Icon
+                          as={<Icon as={FontAwesome} name={show ? 'eye' : 'eye-slash'} />}
+                          size={5}
+                          mr="2"
+                          color="muted.400"
+                        />
+                      </Pressable>
+                    }
+                  />
+                  <Input
+                    placeholder="Digite novamente"
+                    variant="underlined"
+                    type={show ? 'text' : 'password'}
+                    InputRightElement={
+                      <Pressable onPress={() => setShowConfirm(!showConfirm)}>
+                        <Icon
+                          as={<Icon as={FontAwesome} name={showConfirm ? 'eye' : 'eye-slash'} />}
+                          size={5}
+                          mr="2"
+                          color="muted.400"
+                        />
+                      </Pressable>
+                    }
+                  />
                 </Stack>
 
                 <Stack alignItems="center" space={6}>

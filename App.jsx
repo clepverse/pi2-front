@@ -2,13 +2,12 @@ import { StatusBar } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 
-import { Loading } from './src/components/Loading';
+import { Routes } from './src/routes';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { Loading } from './src/components/Loading';
 import { THEME } from './src/theme/index';
-import { SignIn } from './src/screens/SignIn';
-import { SignUp } from './src/screens/SignUp';
 
 const config = {
   dependencies: {
@@ -21,7 +20,7 @@ export default function App() {
   return (
     <NativeBaseProvider theme={THEME} config={config}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-      {fontsLoads ? <SignIn /> : <Loading />}
+      {fontsLoads ? <Routes /> : <Loading />}
     </NativeBaseProvider>
   );
 }
