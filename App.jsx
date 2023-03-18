@@ -21,7 +21,7 @@ export default function App() {
   return (
     <NativeBaseProvider theme={THEME} config={config}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-      {fontsLoads ? <SignUp /> : <Loading />}
+      {fontsLoads ? <SignIn /> : <Loading />}
     </NativeBaseProvider>
   );
 }
