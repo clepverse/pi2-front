@@ -90,12 +90,14 @@ export function SignUp() {
                 </Text>
                 <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10}>
                   <Input
+                    color="#fff"
                     placeholder="Digite um email válido"
                     keyboardType="email-address"
                     autoCapitalize="none"
                     variant="underlined"
                   />
                   <Input
+                    color="#fff"
                     placeholder="Digite sua senha"
                     variant="underlined"
                     type={show ? 'text' : 'password'}
@@ -111,6 +113,7 @@ export function SignUp() {
                     }
                   />
                   <Input
+                    color="#fff"
                     placeholder="Digite novamente"
                     variant="underlined"
                     type={show ? 'text' : 'password'}
