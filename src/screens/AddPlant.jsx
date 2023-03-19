@@ -24,7 +24,6 @@ export function AddPlant() {
           </Box>
           <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10} mt={'10'}>
             <Input placeholder="Digite o Nome da Planta" type="text" variant="underlined" />
-            <Input placeholder="Digite o nome popular" type="text" variant="underlined" />
             <Input
               placeholder="Digite Apelido Para Planta (Opcional)"
               type="text"
