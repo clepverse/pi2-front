@@ -22,7 +22,8 @@ import { Dimensions, Pressable } from "react-native";
 
 export function SignIn() {
   const [show, setShow] = useState(false);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
   function handleNewAccount() {
@@ -107,12 +108,18 @@ export function SignIn() {
                 </Text>
                 <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10}>
                   <Input
+                    value={email}
+                    onChangeText={setEmail}
+                    color="#fff"
                     placeholder="Entre com seu email"
                     keyboardType="email-address"
                     autoCapitalize="none"
                     variant="underlined"
                   />
                   <Input
+                    value={password}
+                    onChangeText={setPassword}
+                    color="#fff"
                     placeholder="Digite sua senha"
                     variant="underlined"
                     type={show ? "text" : "password"}
