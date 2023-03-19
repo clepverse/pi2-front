@@ -15,7 +15,6 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import { Input } from '../components/Input';
 
-import LogoHome from '../assets/logoHomePage.svg';
 import { HomeHeader } from '../components/HomeHeader';
 import { PlantsCard } from '../components/PlantsCard';
 
@@ -25,7 +24,6 @@ export function Home() {
       <VStack flex={1}>
         <HomeHeader />
         <Center mt={2}>
-          {/* <LogoHome width="30%" /> */}
           <Stack space={4} w="90%" maxW="300px" mx="auto" my={4}>
             <Input
               placeholder="Pesquisar plantas ou nome da loja"
@@ -41,14 +39,21 @@ export function Home() {
             />
           </Stack>
         </Center>
-        <VStack flex={1} px={6}>
+        <VStack flex={1} >
           <HStack mb={4}>
-            <Heading color="gray.200" fontSize="lg" my={2}>
+            <Heading
+            color="gray.200"
+            fontSize="lg"
+            my={2}>
               Minhas plantas:
             </Heading>
           </HStack>
-
+          <Container
+          justifyContent={'center'}
+          padding={4}
+          >
           <PlantsCard />
+          </Container>
         </VStack>
       </VStack>
     </ScrollView>

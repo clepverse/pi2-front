@@ -3,9 +3,8 @@ import { TouchableOpacity } from 'react-native';
 
 export function PlantsCard({ ...rest }) {
   return (
-    <TouchableOpacity {...rest}>
-      <Container space={4} justifyContent="space-between">
-        <Row space={6}>
+      <Container space={6} justifyContent="space-between">
+        <Row space={2}>
           <Column size={2}>
             <VStack alignItems="center">
               <Image
@@ -43,7 +42,7 @@ export function PlantsCard({ ...rest }) {
           </Column>
         </Row>
 
-        <Row space={6}>
+        <Row space={2}>
           <Column>
             <VStack alignItems="center">
               <Image
@@ -81,7 +80,6 @@ export function PlantsCard({ ...rest }) {
           </Column>
         </Row>
       </Container>
-    </TouchableOpacity>
   );
 }
 
