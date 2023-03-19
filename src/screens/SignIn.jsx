@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { useNavigation } from '@react-navigation/native';
-import { VStack, Container, Center, Text, Box, Stack, Link, Icon, ScrollView } from 'native-base';
+import { useNavigation } from "@react-navigation/native";
+import {
+  VStack,
+  Container,
+  Center,
+  Text,
+  Box,
+  Stack,
+  Link,
+  Icon,
+  ScrollView,
+} from "native-base";
 
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
-import LogoSvg from '../assets/logo.svg';
-import { Input } from '../components/Input';
-import { Button } from '../components/Button';
-import { Pressable } from 'react-native';
+import LogoSvg from "../assets/logo.svg";
+import { Input } from "../components/Input";
+import { Button } from "../components/Button";
+import { Dimensions, Pressable } from "react-native";
 
 export function SignIn() {
   const [show, setShow] = useState(false);
@@ -16,13 +26,16 @@ export function SignIn() {
   const navigation = useNavigation();
 
   function handleNewAccount() {
-    navigation.navigate('SignUp');
+    navigation.navigate("SignUp");
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <VStack flex={1}>
-        <Center mt={16} mb={12}>
+        <Center mt={16} mb={5}>
           <LogoSvg />
         </Center>
         <Center>
@@ -30,7 +43,7 @@ export function SignIn() {
             p="2px"
             bg={{
               linearGradient: {
-                colors: ['purple.200', 'gray.500'],
+                colors: ["purple.200", "gray.500"],
                 start: [0, 0],
                 end: [1, 0],
               },
@@ -43,7 +56,7 @@ export function SignIn() {
               px={12}
               bg={{
                 linearGradient: {
-                  colors: ['#201F1F', '#473645'],
+                  colors: ["#201F1F", "#473645"],
                   start: [0, 0],
                   end: [1, 0],
                 },
@@ -51,15 +64,20 @@ export function SignIn() {
               p="12"
               rounded="xl"
               _text={{
-                fontSize: 'md',
-                fontWeight: 'medium',
-                color: 'warmGray.50',
-                textAlign: 'center',
+                fontSize: "md",
+                fontWeight: "medium",
+                color: "warmGray.50",
+                textAlign: "center",
               }}
             >
-              <Container flexDirection="row">
+              <Container
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              margin={'auto'}
+              >
                 <Button
-                  width="120px"
+                  width={120}
                   borderLeftRadius={12}
                   borderRightRadius={0}
                   bgColor="green.500"
@@ -68,7 +86,7 @@ export function SignIn() {
                   Entrar
                 </Button>
                 <Button
-                  width="120px"
+                  width={Dimensions.get('window').width > 500 ? Dimensions.get('window').width / 3 : Dimensions.get('window').width / 2.5}
                   borderRightRadius={12}
                   borderLeftRadius={0}
                   bgColor="gray.200"
@@ -78,7 +96,13 @@ export function SignIn() {
                 </Button>
               </Container>
               <Center>
-                <Text fontFamily="heading" fontSize="lg" mt={10} mb={5} color="gray.100">
+                <Text
+                  fontFamily="heading"
+                  fontSize="lg"
+                  mt={10}
+                  mb={5}
+                  color="gray.100"
+                >
                   Acesse sua conta
                 </Text>
                 <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10}>
@@ -91,11 +115,16 @@ export function SignIn() {
                   <Input
                     placeholder="Digite sua senha"
                     variant="underlined"
-                    type={show ? 'text' : 'password'}
+                    type={show ? "text" : "password"}
                     InputRightElement={
                       <Pressable onPress={() => setShow(!show)}>
                         <Icon
-                          as={<Icon as={FontAwesome} name={show ? 'eye' : 'eye-slash'} />}
+                          as={
+                            <Icon
+                              as={FontAwesome}
+                              name={show ? "eye" : "eye-slash"}
+                            />
+                          }
                           size={5}
                           mr="2"
                           color="muted.400"
@@ -112,7 +141,12 @@ export function SignIn() {
                 </Stack>
 
                 <Stack alignItems="center" space={6}>
-                  <Button width="180px" borderRadius={12} bgColor="green.500" color="gray.900">
+                  <Button
+                    width="180px"
+                    borderRadius={12}
+                    bgColor="green.500"
+                    color="gray.900"
+                  >
                     Entrar
                   </Button>
                   <Text fontFamily="body" fontSize="sm" color="gray.100">
@@ -126,8 +160,19 @@ export function SignIn() {
                       mr="6px"
                       color="gray.100"
                     />
-                    <Icon as={FontAwesome} name="twitter" size={10} mr="6px" color="gray.100" />
-                    <Icon as={FontAwesome} name="google" size={10} color="gray.100" />
+                    <Icon
+                      as={FontAwesome}
+                      name="twitter"
+                      size={10}
+                      mr="6px"
+                      color="gray.100"
+                    />
+                    <Icon
+                      as={FontAwesome}
+                      name="google"
+                      size={10}
+                      color="gray.100"
+                    />
                   </Stack>
                 </Stack>
               </Center>
