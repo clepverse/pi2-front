@@ -8,7 +8,7 @@ import LogoSvg from '../assets/logo.svg';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
-import { Pressable } from 'react-native';
+import { Dimensions, Pressable } from 'react-native';
 
 export function SignUp() {
   const [show, setShow] = useState(false);
@@ -62,9 +62,10 @@ export function SignUp() {
               flexDirection="row"
               alignItems="center"
               justifyContent="center"
-              margin={'auto'}>
+              margin={'auto'}
+              >
                 <Button
-                  width="120px"
+                  width={Dimensions.get('window').width / 3}
                   borderLeftRadius={12}
                   borderRightRadius={0}
                   bgColor="gray.200"
@@ -74,7 +75,7 @@ export function SignUp() {
                   Entrar
                 </Button>
                 <Button
-                  width="120px"
+                  width={Dimensions.get('window').width > 500 ? Dimensions.get('window').width / 3 : Dimensions.get('window').width / 2.5}
                   borderRightRadius={12}
                   borderLeftRadius={0}
                   bgColor="green.500"

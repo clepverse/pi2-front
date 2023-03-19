@@ -18,7 +18,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import LogoSvg from "../assets/logo.svg";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { Pressable } from "react-native";
+import { Dimensions, Pressable } from "react-native";
 
 export function SignIn() {
   const [show, setShow] = useState(false);
@@ -77,7 +77,7 @@ export function SignIn() {
               margin={'auto'}
               >
                 <Button
-                  width="120px"
+                  width={120}
                   borderLeftRadius={12}
                   borderRightRadius={0}
                   bgColor="green.500"
@@ -86,7 +86,7 @@ export function SignIn() {
                   Entrar
                 </Button>
                 <Button
-                  width="120px"
+                  width={Dimensions.get('window').width > 500 ? Dimensions.get('window').width / 3 : Dimensions.get('window').width / 2.5}
                   borderRightRadius={12}
                   borderLeftRadius={0}
                   bgColor="gray.200"
