@@ -62,12 +62,12 @@ export function AppRoutes() {
         name="perfilplant"
         component={PerfilPlant}
         options={{
+          tabBarButton: () => null,
           // tabBarShowLabel: true,
-          // tabBarButton: () => null,
 
-          tabBarIcon: ({ color }) => (
-            <Icon as={FontAwesome} name="facebook" size={iconSize} color={color} />
-          ),
+          // tabBarIcon: ({ color }) => (
+          //   <Icon as={FontAwesome} name="facebook" size={iconSize} color={color} />
+          // ),
         }}
       ></Screen>
     </Navigator>
