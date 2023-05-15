@@ -15,11 +15,11 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import { Input } from '../components/Input';
 
-import LogoHome from '../assets/logoHomePage.svg';
+// import LogoHome from '../assets/logoHomePage.svg';
 import { HomeHeader } from '../components/HomeHeader';
 import { PlantsCard } from '../components/PlantsCard';
 
-export function Home() {
+export function Home({navigation}) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <VStack flex={1}>
@@ -47,8 +47,7 @@ export function Home() {
               Minhas plantas:
             </Heading>
           </HStack>
-
-          <PlantsCard />
+          <PlantsCard navigation={navigation} />
         </VStack>
       </VStack>
     </ScrollView>
