@@ -1,12 +1,16 @@
 import { Heading, HStack, Image, VStack, Row, Column, Container } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 
-export function PlantsCard({ ...rest }) {
+export function PlantsCard({ navigation, ...rest }) {
   return (
-    <TouchableOpacity {...rest}>
       <Container space={4} justifyContent="space-between">
         <Row space={6}>
           <Column size={2}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('perfilplant');
+              }}
+            >
             <VStack alignItems="center">
               <Image
                 source={{
@@ -22,9 +26,11 @@ export function PlantsCard({ ...rest }) {
                 Girasol
               </Heading>
             </VStack>
+            </TouchableOpacity>
           </Column>
 
           <Column>
+          <TouchableOpacity>
             <VStack alignItems="center">
               <Image
                 source={{
@@ -40,11 +46,13 @@ export function PlantsCard({ ...rest }) {
                 Girasol
               </Heading>
             </VStack>
+            </TouchableOpacity>
           </Column>
         </Row>
 
         <Row space={6}>
           <Column>
+          <TouchableOpacity>
             <VStack alignItems="center">
               <Image
                 source={{
@@ -60,9 +68,11 @@ export function PlantsCard({ ...rest }) {
                 Girasol
               </Heading>
             </VStack>
+            </TouchableOpacity>
           </Column>
 
           <Column>
+          <TouchableOpacity>
             <VStack alignItems="center">
               <Image
                 source={{
@@ -78,10 +88,10 @@ export function PlantsCard({ ...rest }) {
                 Girasol
               </Heading>
             </VStack>
+            </TouchableOpacity>
           </Column>
         </Row>
       </Container>
-    </TouchableOpacity>
   );
 }
 
