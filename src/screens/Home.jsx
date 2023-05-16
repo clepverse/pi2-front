@@ -19,9 +19,12 @@ import { Input } from '../components/Input';
 import { HomeHeader } from '../components/HomeHeader';
 import { PlantsCard } from '../components/PlantsCard';
 
-export function Home({navigation}) {
+export function Home({ navigation }) {
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <VStack flex={1}>
         <HomeHeader />
         <Center mt={2}>
@@ -36,7 +39,13 @@ export function Home({navigation}) {
               rounded={'full'}
               height={14}
               InputLeftElement={
-                <Icon as={FontAwesome} name="search" ml={4} size={8} color="gray.100" />
+                <Icon
+                  as={FontAwesome}
+                  name="search"
+                  ml={4}
+                  size={8}
+                  color="gray.100"
+                />
               }
             />
           </Stack>

@@ -1,6 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { VStack, Container, Center, Text, Box, Stack, Icon, ScrollView } from 'native-base';
+import {
+  VStack,
+  Container,
+  Center,
+  Text,
+  Box,
+  Stack,
+  Icon,
+  ScrollView,
+} from 'native-base';
 
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -9,10 +18,17 @@ import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions, Pressable } from 'react-native';
+import axios from 'axios';
+import { api } from '../axios/api';
 
 export function SignUp() {
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password_confirmation, setPassword_confirmation] = useState('');
 
   const navigation = useNavigation();
 
@@ -20,8 +36,32 @@ export function SignUp() {
     navigation.navigate('SignIn');
   }
 
+  const handleSignUp = async () => {
+    try {
+      const response = await api.post('api/user/signup', {
+        name,
+        email,
+        password,
+        password_confirmation,
+      });
+
+      setEmail('');
+      setPassword('');
+      setPassword_confirmation('');
+
+      handleGoBack();
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <VStack flex={1}>
         <Center mt={16} mb={5}>
           <LogoSvg />
@@ -58,11 +98,11 @@ export function SignUp() {
                 textAlign: 'center',
               }}
             >
-              <Container               
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="center"
-              margin={'auto'}
+              <Container
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+                margin={'auto'}
               >
                 <Button
                   width={Dimensions.get('window').width / 3}
@@ -75,7 +115,11 @@ export function SignUp() {
                   Entrar
                 </Button>
                 <Button
-                  width={Dimensions.get('window').width > 500 ? Dimensions.get('window').width / 3 : Dimensions.get('window').width / 2.5}
+                  width={
+                    Dimensions.get('window').width > 500
+                      ? Dimensions.get('window').width / 3
+                      : Dimensions.get('window').width / 2.5
+                  }
                   borderRightRadius={12}
                   borderLeftRadius={0}
                   bgColor="green.500"
@@ -85,11 +129,28 @@ export function SignUp() {
                 </Button>
               </Container>
               <Center>
-                <Text fontFamily="heading" fontSize="lg" mt={10} mb={5} color="gray.100">
+                <Text
+                  fontFamily="heading"
+                  fontSize="lg"
+                  mt={10}
+                  mb={5}
+                  color="gray.100"
+                >
                   Cadastre uma conta
                 </Text>
                 <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10}>
                   <Input
+                    value={name}
+                    onChangeText={setName}
+                    color="#fff"
+                    placeholder="Digite seu nome"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    variant="underlined"
+                  />
+                  <Input
+                    value={email}
+                    onChangeText={setEmail}
                     color="#fff"
                     placeholder="Digite um email válido"
                     keyboardType="email-address"
@@ -97,6 +158,8 @@ export function SignUp() {
                     variant="underlined"
                   />
                   <Input
+                    value={password}
+                    onChangeText={setPassword}
                     color="#fff"
                     placeholder="Digite sua senha"
                     variant="underlined"
@@ -104,7 +167,12 @@ export function SignUp() {
                     InputRightElement={
                       <Pressable onPress={() => setShow(!show)}>
                         <Icon
-                          as={<Icon as={FontAwesome} name={show ? 'eye' : 'eye-slash'} />}
+                          as={
+                            <Icon
+                              as={FontAwesome}
+                              name={show ? 'eye' : 'eye-slash'}
+                            />
+                          }
                           size={5}
                           mr="2"
                           color="muted.400"
@@ -113,6 +181,8 @@ export function SignUp() {
                     }
                   />
                   <Input
+                    value={password_confirmation}
+                    onChangeText={setPassword_confirmation}
                     color="#fff"
                     placeholder="Digite novamente"
                     variant="underlined"
@@ -120,7 +190,12 @@ export function SignUp() {
                     InputRightElement={
                       <Pressable onPress={() => setShowConfirm(!showConfirm)}>
                         <Icon
-                          as={<Icon as={FontAwesome} name={showConfirm ? 'eye' : 'eye-slash'} />}
+                          as={
+                            <Icon
+                              as={FontAwesome}
+                              name={showConfirm ? 'eye' : 'eye-slash'}
+                            />
+                          }
                           size={5}
                           mr="2"
                           color="muted.400"
@@ -131,10 +206,16 @@ export function SignUp() {
                 </Stack>
 
                 <Stack alignItems="center" space={6}>
-                  <Button width="180px" borderRadius={12} bgColor="green.500" color="gray.900">
+                  <Button
+                    onPress={handleSignUp}
+                    width="180px"
+                    borderRadius={12}
+                    bgColor="green.500"
+                    color="gray.900"
+                  >
                     Registrar
                   </Button>
-                  <Text fontFamily="body" fontSize="sm" color="gray.100">
+                  {/* <Text fontFamily="body" fontSize="sm" color="gray.100">
                     Entre com redes sociais
                   </Text>
                   <Stack flexDirection="row">
@@ -145,9 +226,20 @@ export function SignUp() {
                       mr="6px"
                       color="gray.100"
                     />
-                    <Icon as={FontAwesome} name="twitter" size={10} mr="6px" color="gray.100" />
-                    <Icon as={FontAwesome} name="google" size={10} color="gray.100" />
-                  </Stack>
+                    <Icon
+                      as={FontAwesome}
+                      name="twitter"
+                      size={10}
+                      mr="6px"
+                      color="gray.100"
+                    />
+                    <Icon
+                      as={FontAwesome}
+                      name="google"
+                      size={10}
+                      color="gray.100"
+                    />
+                  </Stack> */}
                 </Stack>
               </Center>
             </Box>

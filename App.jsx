@@ -1,6 +1,12 @@
 import { StatusBar } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
-import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
+import {
+  useFonts,
+  Roboto_400Regular,
+  Roboto_700Bold,
+} from '@expo-google-fonts/roboto';
+
+import { AuthProvider } from './src/contexts/authContext';
 
 import { Routes } from './src/routes';
 
@@ -18,9 +24,15 @@ const config = {
 export default function App() {
   const [fontsLoads] = useFonts({ Roboto_400Regular, Roboto_700Bold });
   return (
-    <NativeBaseProvider theme={THEME} config={config}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-      {fontsLoads ? <Routes /> : <Loading />}
-    </NativeBaseProvider>
+    <AuthProvider>
+      <NativeBaseProvider theme={THEME} config={config}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent
+        />
+        {fontsLoads ? <Routes /> : <Loading />}
+      </NativeBaseProvider>
+    </AuthProvider>
   );
 }

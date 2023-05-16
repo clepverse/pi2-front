@@ -1,4 +1,16 @@
-import { VStack, Container, Center, Text, Box, Stack, Link, Icon, ScrollView, Heading, Image } from 'native-base';
+import {
+  VStack,
+  Container,
+  Center,
+  Text,
+  Box,
+  Stack,
+  Link,
+  Icon,
+  ScrollView,
+  Heading,
+  Image,
+} from 'native-base';
 
 import { FontAwesome } from '@expo/vector-icons';
 import { Input } from '../components/Input';
@@ -10,37 +22,44 @@ export function Stores() {
   const [country, setCountry] = useState('');
   const [shops, setShops] = useState([]);
 
- useEffect(() => {
-   HanddleLoja();
- }, [country]);
+  useEffect(() => {
+    HanddleLoja();
+  }, [country]);
 
-  const HanddleLoja = async ()  => {
-    try{
+  const HanddleLoja = async () => {
+    try {
       let response;
       if (country !== '') {
-         response = await axios.post('https://catando-lojas--salomaomdrs.repl.co/findstore', {
-          city: country
-        })
-      }else{
-         response = await axios.post('https://catando-lojas--salomaomdrs.repl.co/findstore', {
-          city: "Recife"
-        })
+        response = await axios.post(
+          'https://catando-lojas--salomaomdrs.repl.co/findstore',
+          {
+            city: country,
+          },
+        );
+      } else {
+        response = await axios.post(
+          'https://catando-lojas--salomaomdrs.repl.co/findstore',
+          {
+            city: 'Recife',
+          },
+        );
       }
-      console.log(response.data);
       setShops(response.data);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <VStack flex={1}>
         <Center mt={20}>
           <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10} mt={'10'}>
-
             <Input
-              placeholder="Pesquisar plantas ou nome da loja"
+              placeholder="Digite sua cidade"
               placeholderTextColor="gray.100"
               type="text"
               variant="solid"
@@ -49,26 +68,32 @@ export function Stores() {
               height={14}
               onChangeText={setCountry}
               InputLeftElement={
-                <Icon as={FontAwesome} name="search" ml={4} size={8} color="gray.100" />
+                <Icon
+                  as={FontAwesome}
+                  name="search"
+                  ml={4}
+                  size={8}
+                  color="gray.100"
+                />
               }
             />
-            
           </Stack>
           <Stack>
-              {shops.map((shop) => (
-                <>
-                  <TouchableOpacity
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      backgroundColor: '#232323',
-                      height: 200,
-                      width: 300,
-                      marginBottom: 10,
-                      padding: 5
-                    }}
-                  >
+            {shops.map((shop, index) => (
+              <>
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    backgroundColor: '#232323',
+                    height: 200,
+                    width: 300,
+                    marginBottom: 10,
+                    padding: 5,
+                  }}
+                >
                   <VStack alignItems="center">
                     <Image
                       source={{
@@ -80,14 +105,21 @@ export function Stores() {
                       rounded="md"
                     />
 
-                    <Heading fontSize="sm" width={'100%'} justifyContent={'center'} textAlign={'center'}  color="white">
-                      <Text>{shop.nome}</Text>{'\n'}
+                    <Heading
+                      fontSize="sm"
+                      width={'100%'}
+                      justifyContent={'center'}
+                      textAlign={'center'}
+                      color="white"
+                    >
+                      <Text>{shop.nome}</Text>
+                      {'\n'}
                       <Text>{shop.endereco}</Text>
                     </Heading>
                   </VStack>
-                  </TouchableOpacity>
-                </>
-              ))}
+                </TouchableOpacity>
+              </>
+            ))}
           </Stack>
         </Center>
       </VStack>

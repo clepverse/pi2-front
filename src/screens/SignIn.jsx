@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 import {
   VStack,
   Container,
@@ -11,24 +11,56 @@ import {
   Link,
   Icon,
   ScrollView,
-} from "native-base";
+} from 'native-base';
 
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 
-import LogoSvg from "../assets/logo.svg";
-import { Input } from "../components/Input";
-import { Button } from "../components/Button";
-import { Dimensions, Pressable } from "react-native";
+import LogoSvg from '../assets/logo.svg';
+import { Input } from '../components/Input';
+import { Button } from '../components/Button';
+import { Dimensions, Pressable } from 'react-native';
+import { useAuth } from '../contexts/authContext';
 
 export function SignIn() {
+  const { signIn } = useAuth();
+
   const [show, setShow] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const navigation = useNavigation();
 
   function handleNewAccount() {
-    navigation.navigate("SignUp");
+    navigation.navigate('SignUp');
   }
+
+  // const handleSignIn = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'http://10.0.0.101:3333/api/user/login',
+  //       {
+  //         email,
+  //         password,
+  //       },
+  //     );
+
+  //     setEmail('');
+  //     setPassword('');
+
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const handleSignIn = async () => {
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ScrollView
@@ -44,7 +76,7 @@ export function SignIn() {
             p="2px"
             bg={{
               linearGradient: {
-                colors: ["purple.200", "gray.500"],
+                colors: ['purple.200', 'gray.500'],
                 start: [0, 0],
                 end: [1, 0],
               },
@@ -57,7 +89,7 @@ export function SignIn() {
               px={12}
               bg={{
                 linearGradient: {
-                  colors: ["#201F1F", "#473645"],
+                  colors: ['#201F1F', '#473645'],
                   start: [0, 0],
                   end: [1, 0],
                 },
@@ -65,17 +97,17 @@ export function SignIn() {
               p="12"
               rounded="xl"
               _text={{
-                fontSize: "md",
-                fontWeight: "medium",
-                color: "warmGray.50",
-                textAlign: "center",
+                fontSize: 'md',
+                fontWeight: 'medium',
+                color: 'warmGray.50',
+                textAlign: 'center',
               }}
             >
               <Container
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="center"
-              margin={'auto'}
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+                margin={'auto'}
               >
                 <Button
                   width={120}
@@ -87,7 +119,11 @@ export function SignIn() {
                   Entrar
                 </Button>
                 <Button
-                  width={Dimensions.get('window').width > 500 ? Dimensions.get('window').width / 3 : Dimensions.get('window').width / 2.5}
+                  width={
+                    Dimensions.get('window').width > 500
+                      ? Dimensions.get('window').width / 3
+                      : Dimensions.get('window').width / 2.5
+                  }
                   borderRightRadius={12}
                   borderLeftRadius={0}
                   bgColor="gray.200"
@@ -122,14 +158,14 @@ export function SignIn() {
                     color="#fff"
                     placeholder="Digite sua senha"
                     variant="underlined"
-                    type={show ? "text" : "password"}
+                    type={show ? 'text' : 'password'}
                     InputRightElement={
                       <Pressable onPress={() => setShow(!show)}>
                         <Icon
                           as={
                             <Icon
                               as={FontAwesome}
-                              name={show ? "eye" : "eye-slash"}
+                              name={show ? 'eye' : 'eye-slash'}
                             />
                           }
                           size={5}
@@ -149,6 +185,7 @@ export function SignIn() {
 
                 <Stack alignItems="center" space={6}>
                   <Button
+                    onPress={handleSignIn}
                     width="180px"
                     borderRadius={12}
                     bgColor="green.500"
@@ -156,7 +193,7 @@ export function SignIn() {
                   >
                     Entrar
                   </Button>
-                  <Text fontFamily="body" fontSize="sm" color="gray.100">
+                  {/* <Text fontFamily="body" fontSize="sm" color="gray.100">
                     Entre com redes sociais
                   </Text>
                   <Stack flexDirection="row">
@@ -180,7 +217,7 @@ export function SignIn() {
                       size={10}
                       color="gray.100"
                     />
-                  </Stack>
+                  </Stack> */}
                 </Stack>
               </Center>
             </Box>
