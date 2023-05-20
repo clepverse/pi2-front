@@ -15,14 +15,15 @@ import { useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { Input } from '../components/Input';
 
-export function PerfilPlant({ route }) {
+import { api } from '../axios/api';
+
+export function PerfilPlant({ route, navigation }) {
   const [selected, setSelectedDate] = useState(null);
   const [markedDates, setMarkedDates] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   // const [event, setEvent] = useState([]);
 
   const { plant } = route.params;
-  console.log({ plant });
 
   const events = plant.diaryEntries.map((entry) => {
     return {
@@ -44,8 +45,6 @@ export function PerfilPlant({ route }) {
   //   },
   // ];
 
-  console.log({ events });
-
   const handleDateSelect = (date) => {
     setSelectedDate(date.dateString);
     setModalVisible(true);
@@ -58,6 +57,16 @@ export function PerfilPlant({ route }) {
   events.forEach((event) => {
     eventDates[event.date] = { marked: true };
   });
+
+  const handleDeletePlant = async () => {
+    try {
+      const response = await api.delete(`/save/delete/${plant._id}`);
+
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ScrollView
@@ -105,6 +114,7 @@ export function PerfilPlant({ route }) {
                 backgroundColor: '#FA4141',
                 width: '25%',
               }}
+              onPress={handleDeletePlant}
             >
               <Text style={{ color: '#FFF' }}> Excluir </Text>
             </Button>

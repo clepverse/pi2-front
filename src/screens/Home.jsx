@@ -12,6 +12,8 @@ import {
   Heading,
 } from 'native-base';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { FontAwesome } from '@expo/vector-icons';
 import { Input } from '../components/Input';
 
@@ -28,13 +30,17 @@ export function Home({ navigation }) {
 
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) {
-    navigation.navigate('SignIn');
-  }
+  console.log({ isAuthenticated });
 
   useEffect(() => {
     (async () => {
-      const response = await api.get('api/save');
+      const storagedToken = await AsyncStorage.getItem('@token');
+
+      const response = await api.get('/save', {
+        headers: {
+          Authorization: `Bearer ${storagedToken}`,
+        },
+      });
 
       const requests = response.data.map(async (plant) => {
         const response = await axios.post(

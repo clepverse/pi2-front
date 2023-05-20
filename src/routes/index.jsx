@@ -11,8 +11,6 @@ export function Routes() {
 
   const { isAuthenticated } = useAuth();
 
-  console.log(isAuthenticated);
-
   const theme = DefaultTheme;
   theme.colors.background = colors.gray[900];
 

@@ -38,7 +38,7 @@ export function SignUp() {
 
   const handleSignUp = async () => {
     try {
-      const response = await api.post('api/user/signup', {
+      const response = await api.post('/user/signup', {
         name,
         email,
         password,
@@ -50,8 +50,6 @@ export function SignUp() {
       setPassword_confirmation('');
 
       handleGoBack();
-
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -129,13 +127,7 @@ export function SignUp() {
                 </Button>
               </Container>
               <Center>
-                <Text
-                  fontFamily="heading"
-                  fontSize="lg"
-                  mt={10}
-                  mb={5}
-                  color="gray.100"
-                >
+                <Text fontFamily="heading" fontSize="lg" mt={10} mb={5} color="gray.100">
                   Cadastre uma conta
                 </Text>
                 <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10}>
@@ -167,12 +159,7 @@ export function SignUp() {
                     InputRightElement={
                       <Pressable onPress={() => setShow(!show)}>
                         <Icon
-                          as={
-                            <Icon
-                              as={FontAwesome}
-                              name={show ? 'eye' : 'eye-slash'}
-                            />
-                          }
+                          as={<Icon as={FontAwesome} name={show ? 'eye' : 'eye-slash'} />}
                           size={5}
                           mr="2"
                           color="muted.400"

@@ -14,7 +14,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { useState } from 'react';
-import axios from 'axios';
 import { api } from '../axios/api';
 
 export function AddPlant({ navigation }) {
@@ -24,7 +23,7 @@ export function AddPlant({ navigation }) {
 
   const handleAddPlant = async () => {
     try {
-      const response = await api.post('api/plant/create', {
+      await api.post('/plant/create', {
         namePlant,
         nickName,
         dateOfPurchase,
