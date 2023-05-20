@@ -17,11 +17,16 @@ const getToken = async () => {
 };
 
 api.interceptors.request.use(async (config) => {
-  const token = await getToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  try {
+    const token = await getToken();
+    if (token && token.trim()) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  } catch (error) {
+    console.log('Erro ao cabeçalho da requisição:', error);
+    return config;
   }
-  return config;
 });
 
 axios.interceptors.response.use(

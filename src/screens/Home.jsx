@@ -18,8 +18,61 @@ import { Input } from '../components/Input';
 // import LogoHome from '../assets/logoHomePage.svg';
 import { HomeHeader } from '../components/HomeHeader';
 import { PlantsCard } from '../components/PlantsCard';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { api } from '../axios/api';
+import { useAuth } from '../contexts/authContext';
 
 export function Home({ navigation }) {
+  const [plants, setPlants] = useState([]);
+
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    navigation.navigate('SignIn');
+  }
+
+  useEffect(() => {
+    (async () => {
+      const response = await api.get('api/save');
+
+      const requests = response.data.map(async (plant) => {
+        const response = await axios.post(
+          'https://catando-lojas--salomaomdrs.repl.co/plantimg',
+          {
+            plant: plant.popularName,
+          },
+        );
+        return { plantUrl: response.data, ...plant };
+      });
+
+      const responseData = await Promise.all(requests);
+
+      const updatedPlants = responseData.map((item, index) => {
+        return { ...plants[index], ...item };
+      });
+
+      setPlants(updatedPlants);
+    })();
+  }, []);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const requests = allPlantsPopularName.map(async (plant) => {
+  //       const response = await axios.post(
+  //         'https://catando-lojas--salomaomdrs.repl.co/plantimg',
+  //         {
+  //           plant: plant,
+  //         },
+  //       );
+  //       return response.data;
+  //     });
+
+  //     const responseData = await Promise.all(requests);
+  //     setPlantUrl(responseData);
+  //   })();
+  // }, []);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -39,13 +92,7 @@ export function Home({ navigation }) {
               rounded={'full'}
               height={14}
               InputLeftElement={
-                <Icon
-                  as={FontAwesome}
-                  name="search"
-                  ml={4}
-                  size={8}
-                  color="gray.100"
-                />
+                <Icon as={FontAwesome} name="search" ml={4} size={8} color="gray.100" />
               }
             />
           </Stack>
@@ -56,7 +103,7 @@ export function Home({ navigation }) {
               Minhas plantas:
             </Heading>
           </HStack>
-          <PlantsCard navigation={navigation} />
+          <PlantsCard navigation={navigation} plants={plants} />
         </VStack>
       </VStack>
     </ScrollView>

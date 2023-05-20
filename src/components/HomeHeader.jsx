@@ -7,7 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/authContext';
 
 export function HomeHeader() {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   return (
     <HStack bg="gray.800" pt={10} pb={2} alignItems="center" px={6}>
       <UserPhoto
@@ -17,7 +17,7 @@ export function HomeHeader() {
         mr={3}
       />
       <VStack flex={1}>
-        <Heading color="gray.100">@Aldo</Heading>
+        <Heading color="gray.100">{`@${user?.name}`}</Heading>
       </VStack>
       <TouchableOpacity onPress={signOut}>
         <Icon as={MaterialIcons} name="logout" size={8} color="gray.200" />

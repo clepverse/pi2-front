@@ -68,57 +68,49 @@ export function Stores() {
               height={14}
               onChangeText={setCountry}
               InputLeftElement={
-                <Icon
-                  as={FontAwesome}
-                  name="search"
-                  ml={4}
-                  size={8}
-                  color="gray.100"
-                />
+                <Icon as={FontAwesome} name="search" ml={4} size={8} color="gray.100" />
               }
             />
           </Stack>
           <Stack>
             {shops.map((shop, index) => (
-              <>
-                <TouchableOpacity
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    backgroundColor: '#232323',
-                    height: 200,
-                    width: 300,
-                    marginBottom: 10,
-                    padding: 5,
-                  }}
-                >
-                  <VStack alignItems="center">
-                    <Image
-                      source={{
-                        uri: 'https://forbes.com.br/wp-content/uploads/2022/06/girassol_04jul22_Mahathir-Mohd-Yasin_EyeEm_Gettyimages-1024x683.jpg',
-                      }}
-                      alt="Imagem planta"
-                      w={40}
-                      h={32}
-                      rounded="md"
-                    />
+              <TouchableOpacity
+                key={index}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  backgroundColor: '#232323',
+                  height: 200,
+                  width: 300,
+                  marginBottom: 10,
+                  padding: 5,
+                }}
+              >
+                <VStack alignItems="center">
+                  <Image
+                    source={{
+                      uri: 'https://forbes.com.br/wp-content/uploads/2022/06/girassol_04jul22_Mahathir-Mohd-Yasin_EyeEm_Gettyimages-1024x683.jpg',
+                    }}
+                    alt="Imagem planta"
+                    w={40}
+                    h={32}
+                    rounded="md"
+                  />
 
-                    <Heading
-                      fontSize="sm"
-                      width={'100%'}
-                      justifyContent={'center'}
-                      textAlign={'center'}
-                      color="white"
-                    >
-                      <Text>{shop.nome}</Text>
-                      {'\n'}
-                      <Text>{shop.endereco}</Text>
-                    </Heading>
-                  </VStack>
-                </TouchableOpacity>
-              </>
+                  <Heading
+                    fontSize="sm"
+                    width={'100%'}
+                    justifyContent={'center'}
+                    textAlign={'center'}
+                    color="white"
+                  >
+                    <Text>{shop.nome}</Text>
+                    {'\n'}
+                    <Text>{shop.endereco}</Text>
+                  </Heading>
+                </VStack>
+              </TouchableOpacity>
             ))}
           </Stack>
         </Center>
