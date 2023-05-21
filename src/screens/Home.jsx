@@ -83,6 +83,7 @@ export function Home({ navigation }) {
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
+      horizontal={true}
     >
       <VStack flex={1}>
         <HomeHeader />

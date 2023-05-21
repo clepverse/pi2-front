@@ -17,7 +17,11 @@ import { Input } from '../components/Input';
 
 import { api } from '../axios/api';
 
-export function PerfilPlant({ route, navigation }) {
+import { useNavigation } from '@react-navigation/native';
+
+export function PerfilPlant({ route }) {
+  const navigation = useNavigation();
+
   const [selected, setSelectedDate] = useState(null);
   const [markedDates, setMarkedDates] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,9 +64,9 @@ export function PerfilPlant({ route, navigation }) {
 
   const handleDeletePlant = async () => {
     try {
-      const response = await api.delete(`/save/delete/${plant._id}`);
+      await api.delete(`/save/delete/${plant._id}`);
 
-      navigation.goBack();
+      navigation.navigate('home');
     } catch (error) {
       console.log(error);
     }
