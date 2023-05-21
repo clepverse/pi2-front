@@ -21,7 +21,10 @@ export function AddPlant({ navigation }) {
   const [nickName, setNickName] = useState('');
   const [dateOfPurchase, setDateOfPurchase] = useState('');
 
+  const shouldRefresh = true;
+
   const handleAddPlant = async () => {
+    console.log({ namePlant, nickName, dateOfPurchase });
     try {
       await api.post('/plant/create', {
         namePlant,
@@ -29,7 +32,13 @@ export function AddPlant({ navigation }) {
         dateOfPurchase,
       });
 
-      navigation.navigate('home');
+      setNamePlant('');
+      setNickName('');
+      setDateOfPurchase('');
+
+      navigation.navigate('home', {
+        shouldRefresh,
+      });
     } catch (err) {
       console.log(err);
     }

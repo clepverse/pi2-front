@@ -25,7 +25,7 @@ export function PlantsCard({ navigation, plants, ...rest }) {
             />
 
             <Heading fontSize="lg" color="white">
-              {item.popularName}
+              {item.nickName}
             </Heading>
           </VStack>
         </TouchableOpacity>

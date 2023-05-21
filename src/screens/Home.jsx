@@ -12,25 +12,28 @@ import {
   Heading,
 } from 'native-base';
 
+import { useQuery } from 'react-query';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { FontAwesome } from '@expo/vector-icons';
 import { Input } from '../components/Input';
 
-// import LogoHome from '../assets/logoHomePage.svg';
 import { HomeHeader } from '../components/HomeHeader';
 import { PlantsCard } from '../components/PlantsCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { api } from '../axios/api';
-import { useAuth } from '../contexts/authContext';
 
-export function Home({ navigation }) {
+export function Home({ navigation, route }) {
   const [plants, setPlants] = useState([]);
+  const [shouldRefreshToggle, setShouldRefreshToggle] = useState(false);
 
-  const { isAuthenticated } = useAuth();
-
-  console.log({ isAuthenticated });
+  useEffect(() => {
+    if (route.params?.shouldRefresh) {
+      setShouldRefreshToggle((prevState) => !prevState);
+    }
+  }, [route.params]);
 
   useEffect(() => {
     (async () => {
@@ -60,7 +63,48 @@ export function Home({ navigation }) {
 
       setPlants(updatedPlants);
     })();
-  }, []);
+  }, [shouldRefreshToggle]);
+
+  // const fetchPlants = async () => {
+  //   const storagedToken = await AsyncStorage.getItem('@token');
+
+  //   const response = await api.get('/save', {
+  //     headers: {
+  //       Authorization: `Bearer ${storagedToken}`,
+  //     },
+  //   });
+
+  //   const requests = response.data.map(async (plant) => {
+  //     const response = await axios.post(
+  //       'https://catando-lojas--salomaomdrs.repl.co/plantimg',
+  //       {
+  //         plant: plant.popularName,
+  //       },
+  //     );
+  //     return { plantUrl: response.data, ...plant };
+  //   });
+
+  //   const responseData = await Promise.all(requests);
+
+  //   const updatedPlants = responseData.map((item, index) => {
+  //     return { ...plants[index], ...item };
+  //   });
+
+  //   setPlants(updatedPlants);
+  // };
+
+  // const {
+  //   data: plantsData,
+  //   isLoading,
+  //   error,
+  // } = useQuery(['plants'], fetchPlants, {
+  //   refetchOnWindowFocus: true,
+  //   refetchOnMount: true,
+  //   retry: true,
+  //   cacheTime: 0,
+  // });
+
+  // console.log(plantsData);
 
   // useEffect(() => {
   //   (async () => {
