@@ -10,8 +10,10 @@ import {
   ScrollView,
   Button,
   Modal,
+  Image,
+  Heading,
 } from 'native-base';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { Input } from '../components/Input';
 
@@ -22,12 +24,24 @@ import { useNavigation } from '@react-navigation/native';
 export function PerfilPlant({ route }) {
   const navigation = useNavigation();
 
-  const [selected, setSelectedDate] = useState(null);
+  const { plant } = route.params;
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [title, setTitle] = useState('');
   const [markedDates, setMarkedDates] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  // const [event, setEvent] = useState([]);
+  // const [events, setEvents] = useState();
 
-  const { plant } = route.params;
+  // const events = [
+  //   {
+  //     date: '2023-05-19',
+  //     title: 'Evento 1',
+  //   },
+  //   {
+  //     date: '2023-05-20',
+  //     title: 'Evento 2',
+  //   },
+  // ];
 
   const events = plant.diaryEntries.map((entry) => {
     return {
@@ -36,18 +50,7 @@ export function PerfilPlant({ route }) {
     };
   });
 
-  // const events = [
-  //   {
-  //     date: '2023-05-19',
-  //     title: 'Evento 1',
-  //     description: 'Descrição do evento 1',
-  //   },
-  //   {
-  //     date: '2023-05-20',
-  //     title: 'Evento 2',
-  //     description: 'Descrição do evento 2',
-  //   },
-  // ];
+  console.log({ events });
 
   const handleDateSelect = (date) => {
     setSelectedDate(date.dateString);
@@ -62,11 +65,36 @@ export function PerfilPlant({ route }) {
     eventDates[event.date] = { marked: true };
   });
 
+  const shouldRefresh = true;
+
+  const verifyDate = (date) => {
+    const text = events.filter((event) => event.date === date);
+    return text;
+  };
+
+  console.log(verifyDate(selectedDate));
+
+  const handleAddEvent = async () => {
+    try {
+      await api.put(`/diary/save/${plant._id}`, {
+        title: title,
+        date: selectedDate,
+      });
+
+      navigation.navigate('home', {
+        shouldRefresh,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleDeletePlant = async () => {
     try {
       await api.delete(`/save/delete/${plant._id}`);
 
-      navigation.navigate('home');
+      navigation.navigate('home', {
+        shouldRefresh,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -79,19 +107,41 @@ export function PerfilPlant({ route }) {
     >
       <VStack flex={1}>
         <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
-          <Modal.Content maxWidth="400px" maxHeight={'400px'}>
+          <Modal.Content maxWidth="500px" maxHeight={'600px'}>
             <Modal.CloseButton />
             <Modal.Header>
-              <Text> Envie um evento para o calendario de sua planta.</Text>
+              <Text> Envie um evento para o calendário de sua planta.</Text>
             </Modal.Header>
             <Modal.Body>
               <Input
-                placeholder="Descrição do evento a adicionar"
+                value={title}
+                placeholder="Title do evento a adicionar"
                 type="text"
                 variant="underlined"
+                onChangeText={(text) => setTitle(text)}
               />
-              <Input placeholder="Digite a data" type="text" variant="underlined" />
             </Modal.Body>
+            <Modal.Footer>
+              <Button.Group space={2}>
+                <Button
+                  variant="ghost"
+                  colorScheme="blueGray"
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onPress={() => {
+                    handleAddEvent();
+                    setModalVisible(false);
+                  }}
+                >
+                  Salvar
+                </Button>
+              </Button.Group>
+            </Modal.Footer>
           </Modal.Content>
         </Modal>
         <Center mt={4}>
@@ -106,15 +156,7 @@ export function PerfilPlant({ route }) {
           >
             <Button
               style={{
-                backgroundColor: '#FFF',
-                width: '15%',
-              }}
-            >
-              <Text> V </Text>
-            </Button>
-
-            <Button
-              style={{
+                marginLeft: 'auto',
                 backgroundColor: '#FA4141',
                 width: '25%',
               }}
@@ -123,10 +165,22 @@ export function PerfilPlant({ route }) {
               <Text style={{ color: '#FFF' }}> Excluir </Text>
             </Button>
           </Box>
+          <VStack alignItems="center" marginX={2}>
+            <Image
+              source={{ uri: plant.plantUrl.src }}
+              alt="Imagem planta"
+              w={40}
+              h={32}
+              rounded="full"
+            />
+          </VStack>
 
-          <Text style={{ color: '#FFF' }}>{plant?.popularName}</Text>
-          <Text style={{ color: '#FFF' }}>{plant?.nickName}</Text>
-          <Text style={{ color: '#FFF' }}>{`${plant?.dateOfPurchase}`}</Text>
+          <VStack style={{ marginVertical: 10, marginLeft: 14 }}>
+            <Text style={{ color: '#FFF' }}>{plant?.popularName}</Text>
+            <Text style={{ color: '#FFF' }}>{plant?.nickName}</Text>
+            <Text style={{ color: '#FFF' }}>{`${plant?.dateOfPurchase}`}</Text>
+            <Text style={{ color: '#FFF' }}>{plant?.care}</Text>
+          </VStack>
 
           <Calendar
             style={{
@@ -134,18 +188,19 @@ export function PerfilPlant({ route }) {
             }}
             onDayPress={handleDateSelect}
             markedDates={{
-              [selected]: {
-                selected: true,
+              [selectedDate]: {
+                selectedDate: true,
                 disableTouchEvent: true,
                 selectedDotColor: 'orange',
               },
               ...eventDates,
             }}
           />
-
-          {selected && <Text style={{ color: '#FFF' }}>Selected date: {selected}</Text>}
+          {/* {selectedDate && (
+            <Text style={{ color: '#FFF' }}>Selected date: {selectedDate}</Text>
+          )} */}
           {events
-            .filter((event) => event.date === selected)
+            .filter((event) => event.date === selectedDate)
             .map((event, index) => (
               <Text style={{ color: '#FFF' }} key={index}>
                 {event.title}

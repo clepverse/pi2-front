@@ -31,6 +31,8 @@ export function SignIn() {
 
   const navigation = useNavigation();
 
+  const shouldRefresh = true;
+
   function handleNewAccount() {
     navigation.navigate('SignUp');
   }
@@ -133,13 +135,7 @@ export function SignIn() {
                 </Button>
               </Container>
               <Center>
-                <Text
-                  fontFamily="heading"
-                  fontSize="lg"
-                  mt={10}
-                  mb={5}
-                  color="gray.100"
-                >
+                <Text fontFamily="heading" fontSize="lg" mt={10} mb={5} color="gray.100">
                   Acesse sua conta
                 </Text>
                 <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10}>
@@ -162,12 +158,7 @@ export function SignIn() {
                     InputRightElement={
                       <Pressable onPress={() => setShow(!show)}>
                         <Icon
-                          as={
-                            <Icon
-                              as={FontAwesome}
-                              name={show ? 'eye' : 'eye-slash'}
-                            />
-                          }
+                          as={<Icon as={FontAwesome} name={show ? 'eye' : 'eye-slash'} />}
                           size={5}
                           mr="2"
                           color="muted.400"
