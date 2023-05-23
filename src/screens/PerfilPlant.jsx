@@ -20,6 +20,7 @@ import { Input } from '../components/Input';
 import { api } from '../axios/api';
 
 import { useNavigation } from '@react-navigation/native';
+import { Loading } from '../components/Loading';
 
 export function PerfilPlant({ route }) {
   const navigation = useNavigation();
@@ -30,18 +31,8 @@ export function PerfilPlant({ route }) {
   const [title, setTitle] = useState('');
   const [markedDates, setMarkedDates] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  // const [events, setEvents] = useState();
 
-  // const events = [
-  //   {
-  //     date: '2023-05-19',
-  //     title: 'Evento 1',
-  //   },
-  //   {
-  //     date: '2023-05-20',
-  //     title: 'Evento 2',
-  //   },
-  // ];
+  const [isLoading, setIsLoading] = useState(false);
 
   const events = plant.diaryEntries.map((entry) => {
     return {
@@ -49,8 +40,6 @@ export function PerfilPlant({ route }) {
       date: entry.dateString,
     };
   });
-
-  console.log({ events });
 
   const handleDateSelect = (date) => {
     setSelectedDate(date.dateString);
@@ -67,14 +56,8 @@ export function PerfilPlant({ route }) {
 
   const shouldRefresh = true;
 
-  const verifyDate = (date) => {
-    const text = events.filter((event) => event.date === date);
-    return text;
-  };
-
-  console.log(verifyDate(selectedDate));
-
   const handleAddEvent = async () => {
+    setIsLoading(true);
     try {
       await api.put(`/diary/save/${plant._id}`, {
         title: title,
@@ -84,21 +67,34 @@ export function PerfilPlant({ route }) {
       navigation.navigate('home', {
         shouldRefresh,
       });
+
+      setSelectedDate(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
   const handleDeletePlant = async () => {
+    setIsLoading(true);
     try {
       await api.delete(`/save/delete/${plant._id}`);
 
       navigation.navigate('home', {
         shouldRefresh,
       });
+
+      setSelectedDate(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <ScrollView
@@ -114,6 +110,7 @@ export function PerfilPlant({ route }) {
             </Modal.Header>
             <Modal.Body>
               <Input
+                style={{ color: '#000' }}
                 value={title}
                 placeholder="Title do evento a adicionar"
                 type="text"
@@ -144,7 +141,7 @@ export function PerfilPlant({ route }) {
             </Modal.Footer>
           </Modal.Content>
         </Modal>
-        <Center mt={4}>
+        <Box mt={4}>
           <Box
             style={{
               display: 'flex',
@@ -175,16 +172,23 @@ export function PerfilPlant({ route }) {
             />
           </VStack>
 
-          <VStack style={{ marginVertical: 10, marginLeft: 14 }}>
-            <Text style={{ color: '#FFF' }}>{plant?.popularName}</Text>
-            <Text style={{ color: '#FFF' }}>{plant?.nickName}</Text>
-            <Text style={{ color: '#FFF' }}>{`${plant?.dateOfPurchase}`}</Text>
-            <Text style={{ color: '#FFF' }}>{plant?.care}</Text>
+          <VStack style={{ marginVertical: 20, marginHorizontal: 14 }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#FFF' }}>
+              {plant?.popularName}
+            </Text>
+            <Text style={{ color: '#FFF', fontSize: 16 }}>{plant?.nickName}</Text>
+            <Text
+              style={{ color: '#FFF', fontSize: 16 }}
+            >{`${plant?.dateOfPurchase}`}</Text>
+            <Text style={{ color: '#FFF', fontSize: 16 }}>
+              {plant?.care.replace(/\d+/g, (match) => `\n${match}-`)}
+            </Text>
           </VStack>
 
           <Calendar
             style={{
               borderRadius: 5,
+              width: '100%',
             }}
             onDayPress={handleDateSelect}
             markedDates={{
@@ -199,14 +203,35 @@ export function PerfilPlant({ route }) {
           {/* {selectedDate && (
             <Text style={{ color: '#FFF' }}>Selected date: {selectedDate}</Text>
           )} */}
+          {/* <Text
+            textAlign="center"
+            style={{
+              fontWeight: 'bold',
+              fontSize: 18,
+              color: '#FFF',
+              marginTop: 10,
+              marginBottom: 4,
+            }}
+          >
+            {selectedDate && events.length > 0 ? ' Evento selecionado:' : 'Sem eventos'}
+          </Text> */}
           {events
             .filter((event) => event.date === selectedDate)
             .map((event, index) => (
-              <Text style={{ color: '#FFF' }} key={index}>
-                {event.title}
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                  color: '#FFF',
+                  marginTop: 10,
+                  marginBottom: 4,
+                }}
+                key={index}
+              >
+                {` ${event.date} - ${event.title}`}
               </Text>
             ))}
-        </Center>
+        </Box>
       </VStack>
     </ScrollView>
   );
