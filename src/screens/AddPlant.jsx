@@ -10,10 +10,12 @@ import {
   ScrollView,
 } from 'native-base';
 
+import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
-import { useState } from 'react';
+import { Loading } from '../components/Loading';
+
 import { api } from '../axios/api';
 
 export function AddPlant({ navigation }) {
@@ -21,10 +23,12 @@ export function AddPlant({ navigation }) {
   const [nickName, setNickName] = useState('');
   const [dateOfPurchase, setDateOfPurchase] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const shouldRefresh = true;
 
   const handleAddPlant = async () => {
-    console.log({ namePlant, nickName, dateOfPurchase });
+    setIsLoading(true);
     try {
       await api.post('/plant/create', {
         namePlant,
@@ -39,10 +43,16 @@ export function AddPlant({ navigation }) {
       navigation.navigate('home', {
         shouldRefresh,
       });
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <ScrollView
@@ -51,7 +61,7 @@ export function AddPlant({ navigation }) {
     >
       <VStack flex={1}>
         <Center flex={1}>
-          <Box
+          {/* <Box
             bg={{
               linearGradient: {
                 colors: ['green.500', 'green.400'],
@@ -63,9 +73,10 @@ export function AddPlant({ navigation }) {
             rounded="full"
           >
             <Icon as={FontAwesome} name="camera" size={12} color="gray.700" />
-          </Box>
+          </Box> */}
           <Stack space={4} w="90%" maxW="300px" mx="auto" mb={10} mt={'10'}>
             <Input
+              style={{ color: '#FFF' }}
               value={namePlant}
               onChangeText={setNamePlant}
               placeholder="Digite o Nome da Planta"
@@ -73,6 +84,7 @@ export function AddPlant({ navigation }) {
               variant="underlined"
             />
             <Input
+              style={{ color: '#FFF' }}
               value={nickName}
               onChangeText={setNickName}
               placeholder="Digite Apelido Para Planta (Opcional)"
@@ -80,6 +92,7 @@ export function AddPlant({ navigation }) {
               variant="underlined"
             />
             <Input
+              style={{ color: '#FFF' }}
               value={dateOfPurchase}
               onChangeText={setDateOfPurchase}
               placeholder="Digite a data da compra da planta (Opcional)"
